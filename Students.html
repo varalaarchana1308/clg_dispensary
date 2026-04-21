@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Students</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f4f6f9;
+}
+
+/* Layout */
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 230px;
+    height: 100vh;
+    background: #0b2c4d;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 12px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.sidebar ul li.active,
+.sidebar ul li:hover {
+    background: #1e88e5;
+    border-radius: 5px;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Top bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-btn {
+    background: #1e88e5;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Search */
+.search-box {
+    margin: 15px 0;
+}
+
+.search-box input {
+    padding: 8px;
+    width: 250px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #f1f1f1;
+}
+
+tr {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Actions */
+.action {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.edit {
+    color: blue;
+}
+
+.delete {
+    color: red;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>COLLEGE DISPENSARY</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li class="active">Students</li>
+        <li>Medicines</li>
+        <li>Stock</li>
+        <li>Sales / Issue</li>
+        <li>Reports</li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+<div class="top-bar">
+    <h2>Students</h2>
+    <button class="add-btn" onclick="addStudent()">+ Add Student</button>
+</div>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search Student..." onkeyup="searchStudent()">
+</div>
+
+<table id="studentTable">
+<tr>
+    <th>Roll No</th>
+    <th>Name</th>
+    <th>Course</th>
+    <th>Department</th>
+    <th>Contact</th>
+    <th>Action</th>
+</tr>
+</table>
+
+</div>
+</div>
+
+<script>
+
+// Load students from backend
+function loadStudents(){
+    fetch("get_students.php")
+    .then(res => res.json())
+    .then(data => {
+        let table = document.getElementById("studentTable");
+
+        table.innerHTML = `
+        <tr>
+            <th>Roll No</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Department</th>
+            <th>Contact</th>
+            <th>Action</th>
+        </tr>`;
+
+        data.forEach(s => {
+            table.innerHTML += `
+            <tr>
+                <td>${s.roll_no}</td>
+                <td>${s.name}</td>
+                <td>${s.course}</td>
+                <td>${s.department}</td>
+                <td>${s.contact}</td>
+                <td>
+                    <span class="action edit">✏️</span>
+                    <span class="action delete" onclick="deleteStudent(${s.id})">🗑️</span>
+                </td>
+            </tr>`;
+        });
+    });
+}
+
+// Add student (simple popup)
+function addStudent(){
+    let roll = prompt("Enter Roll No");
+    let name = prompt("Enter Name");
+    let course = prompt("Enter Course");
+    let dept = prompt("Enter Department");
+    let contact = prompt("Enter Contact");
+
+    let formData = new FormData();
+    formData.append("roll_no", roll);
+    formData.append("name", name);
+    formData.append("course", course);
+    formData.append("department", dept);
+    formData.append("contact", contact);
+
+    fetch("add_student.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(msg => {
+        alert(msg);
+        loadStudents();
+    });
+}
+
+// Delete student
+function deleteStudent(id){
+    if(confirm("Are you sure?")){
+        fetch("delete_student.php?id=" + id)
+        .then(() => loadStudents());
+    }
+}
+
+// Search
+function searchStudent(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let rows = document.querySelectorAll("#studentTable tr");
+
+    rows.forEach((row, index) => {
+        if(index === 0) return;
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
+    });
+}
+
+// Load data on page load
+loadStudents();
+
+</script>
+
+</body>
+</html>
+ 

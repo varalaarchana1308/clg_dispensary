@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dispensary Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>COLLEGE DISPENSARY</h2>
+        <ul>
+            <li class="active">Dashboard</li>
+            <li>Students</li>
+            <li>Medicines</li>
+            <li>Stock</li>
+            <li>Sales / Issue</li>
+            <li>Purchases</li>
+            <li>Suppliers</li>
+            <li>Reports</li>
+            <li>Users</li>
+            <li>Settings</li>
+            <li>Logout</li>
+        </ul>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <h1>Dashboard</h1>
+
+        <!-- Cards -->
+        <div class="cards">
+            <div class="card">
+                <h3>Total Medicines</h3>
+                <h2 class="green">245</h2>
+                <p>Available Medicines</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Stock Value</h3>
+                <h2>₹ 1,24,560</h2>
+                <p>Current Stock Value</p>
+            </div>
+
+            <div class="card">
+                <h3>Issued Today</h3>
+                <h2 class="blue">36</h2>
+                <p>Medicines Issued</p>
+            </div>
+
+            <div class="card">
+                <h3>Low Stock Items</h3>
+                <h2 class="red">12</h2>
+                <p>Items Below Minimum</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts">
+
+            <div class="chart-box">
+                <h3>Monthly Issued Medicines</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+
+            <div class="chart-box">
+                <h3>Stock Overview</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-section">
+            <h3>Recent Transactions</h3>
+
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Invoice No.</th>
+                    <th>Type</th>
+                    <th>Party</th>
+                    <th>Amount</th>
+                </tr>
+
+                <tr>
+                    <td>21-05-2024</td>
+                    <td>INV-1023</td>
+                    <td>Sale</td>
+                    <td>Student</td>
+                    <td>₹ 450</td>
+                </tr>
+
+                <tr>
+                    <td>21-05-2024</td>
+                    <td>PUR-0765</td>
+                    <td>Purchase</td>
+                    <td>MedPlus Pharma</td>
+                    <td>₹ 8,250</td>
+                </tr>
+
+                <tr>
+                    <td>20-05-2024</td>
+                    <td>INV-1022</td>
+                    <td>Sale</td>
+                    <td>Student</td>
+                    <td>₹ 230</td>
+                </tr>
+
+                <tr>
+                    <td>20-05-2024</td>
+                    <td>PUR-0764</td>
+                    <td>Purchase</td>
+                    <td>LifeCare Distributors</td>
+                    <td>₹ 6,500</td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
